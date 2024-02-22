@@ -14,16 +14,12 @@ import shlex
 class FileStorage:
     """This class serializes instances to a JSON file and
     deserializes JSON file to instances
-    Attributes:
-        __file_path: path to the JSON file
-        __objects: objects will be stored
     """
     __file_path = "file.json"
     __objects = {}
 
     def all(self, cls=None):
-        """returns a dictionary
-        Return:
+        """
             returns a dictionary of __object
         """
         dic = {}
@@ -40,8 +36,6 @@ class FileStorage:
 
     def new(self, obj):
         """sets __object to given obj
-        Args:
-            obj: given object
         """
         if obj:
             key = "{}.{}".format(type(obj).__name__, obj.id)
@@ -75,6 +69,6 @@ class FileStorage:
             del self.__objects[key]
 
     def close(self):
-        """ calls reload()
+        """ reloads it
         """
         self.reload()
