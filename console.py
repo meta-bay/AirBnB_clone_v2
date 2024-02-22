@@ -83,38 +83,24 @@ class HBNBCommand(cmd.Cmd):
         Usage: create <class_name>
         """
         try:
-            class_name = arg.split(" ")[0]
-            if len(class_name) == 0:
-                print("** class name missing **")
-                return
-            if class_name and class_name not in self.valid_classes:
-                print("** class doesn't exist **")
-                return
-
-            args = {}
-            arg_cmds = arg.split(" ")
-            for i in range(1, len(arg_cmds)):
-                key = arg_cmds[i].split("=")[0]
-                value = arg_cmds[i].split("=")[1]
-                if value.startswith('"'):
-                    value = value.strip('"').replace("_", " ")
-                else:
-                    try:
-                        value = eval(value)
-                    except (SyntaxError, NameError):
-                        continue
-                args[key] = value
-
-            if args == {}:
-                new_instance = eval(class_name)()
-            else:
-                new_instance = eval(class_name)(**args)
-            storage.new(new_instance)
-            print(new_instance.id)
-            storage.save()
-        except ValueError:
-            print(ValueError)
-            return
+            if not arg:
+                raise SyntaxError()
+            args_list = args.split(" ")
+            kwarg = {}
+            for arg in args_list[1:]:
+                args_tog = arg.split("=")
+                args_tog[1] = eval(args_tog[1])
+                if type(args_tog[1]) is str:
+                    args_tog[1] = args_tog[1]\
+                        .replace("_", " ").replace('"', '\\"')
+                kwarg[args_tog[0]] = args_tog[1]
+        except SyntaxError:
+            print("** class name missing **")
+        except NameError:
+            print("** class doesn't exist **")
+        new_instance = HBNBCommand.classes[args_list[0]](**kwarg)
+        new_instance.save()
+        print(new_instance.id)
 
     def do_show(self, arg):
         """
