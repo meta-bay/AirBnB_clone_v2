@@ -29,8 +29,10 @@ class FileStorage:
             if isinstance(cls, str):
                 cls = globals().get(cls)
             if cls and issubclass(cls, BaseModel):
-                cls_dict = {k: v for k,
-                            v in self.__objects.items() if isinstance(v, cls)}
+                cls_dict = {
+                    key: val for key,
+                    val in self.__objects.items() if isinstance(val, cls)
+                            }
                 return cls_dict
         return FileStorage.__objects
 
@@ -67,14 +69,14 @@ class FileStorage:
 
     def delete(self, obj=None):
         """
-         to delete obj from __objects if it’s inside - if obj is equal to None,
-         the method should not do anything
+         Delete obj from __objects if it’s inside
         """
         if obj is None:
             return
         del_obj = f"{obj.__class__.__name__}.{obj.id}"
-
         try:
             del FileStorage.__objects[del_obj]
-        except AttributeError, KeyboardInterrupt:
+        except AttributeError:
+            pass
+        except KeyboardInterrupt:
             pass
