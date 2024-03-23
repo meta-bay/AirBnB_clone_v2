@@ -24,6 +24,7 @@ def hbnb():
 
 @app.route('/c/<text>')
 def c_is_fun(text):
+    strict_slashes = False
     c = 'c '
     for i in text:
         if i == '_':
