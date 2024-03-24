@@ -10,7 +10,7 @@ from models.state import State
 app = Flask(__name__)
 
 
-@app.route('/states_list')
+@app.route('/states_list', strict_slashes=False)
 def states_list():
     states = storage.all(State)
     sorted_states = sorted(states.values(), key=lambda state: state.name)
@@ -23,5 +23,4 @@ def app_teardown(arg=None):
 
 
 if __name__ == "__main__":
-    app.url_map.strict_slashes = False
     app.run(host='0.0.0.0', port=5000)
