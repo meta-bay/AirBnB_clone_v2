@@ -10,7 +10,7 @@ from models.state import State
 app = Flask(__name__)
 
 
-app.route('/states_list', strict_slashes=False)
+@app.route('/states_list', strict_slashes=False)
 def states_list():
     states = storage.all(State)
     sorted_states = sorted(states.values(), key=lambda s: s.name)
